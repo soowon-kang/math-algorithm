@@ -9,7 +9,7 @@ Simple mathematical algorithms archive
 * radix base converter
 * factorial number
 * Fibonacci's number
-* Hanoi's tower
+* Hanoi tower
 * The longest seats
 * prime number
 * RSA

@@ -1,9 +1,17 @@
 # -*- coding: utf-8 -*-
-# This is HW for stable-matching algorithm.
+"""
+This is HW for stable-matching algorithm.
+"""
+
 import random
 
 
-def stable_matching(men=[], women=[]):
+def stable_matching(men, women):
+    """
+    :param men: list
+    :param women: list
+    :return: list
+    """
     assert isinstance(men, list) or isinstance(men, tuple)
     assert isinstance(women, list) or isinstance(women, tuple)
 
@@ -11,16 +19,16 @@ def stable_matching(men=[], women=[]):
     assert n == len(women)
 
     matched = []
-    husband = [0 for _ in xrange(n)]
+    husband = [0 for _ in range(n)]
 
     men_copy = []
     for m, item in enumerate(men):
         men_copy.append([0, item])
 
-    unmatched_men = range(n)
+    unmatched_men = list(range(n))
 
-    women_invert = [[0 for i in xrange(n)] for j in xrange(n)]
-    for w in xrange(n):
+    women_invert = [[0 for i in range(n)] for j in range(n)]
+    for w in range(n):
         for p, m in enumerate(women[w]):
             women_invert[w][m-1] = p
 
@@ -45,16 +53,16 @@ def stable_matching(men=[], women=[]):
     return matched
 
 
-def verify_matching(matched_list=[], men=[], women=[]):
+def verify_matching(matched_list, men, women):
     n = len(matched_list)
     assert n == len(men)
     assert n == len(women)
-    husband = [-1 for _ in xrange(n)]
-    women_invert = [[-1 for i in xrange(n)] for j in xrange(n)]
+    husband = [-1 for _ in range(n)]
+    women_invert = [[-1 for i in range(n)] for j in range(n)]
     for man, woman in matched_list:
         husband[woman-1] = man-1
 
-    for w in xrange(n):
+    for w in range(n):
         for p, m in enumerate(women[w]):
             women_invert[w][m-1] = p
 
@@ -78,12 +86,12 @@ if __name__ == "__main__":
     # w = ((1, 2, 3), (1, 2, 3), (1, 2, 3))
     m = []
     w = []
-    n = input()
-    arr = range(1, n+1)
-    for i in xrange(n):
+    n = int(input())
+    arr = list(range(1, n + 1))
+    for i in range(n):
         random.shuffle(arr)
         m.append(arr[:])
         random.shuffle(arr)
         w.append(arr[:])
     matched = stable_matching(m, w)
-    print verify_matching(matched, m, w)
+    print(verify_matching(matched, m, w))

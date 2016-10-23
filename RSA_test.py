@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+"""
+RSA algorithm practice
+This is still working.
+"""
+
 W = ''
 e = 65537
 N = '251959084756578934940271832400483985714292821262040320277771378360' + \
@@ -29,30 +34,33 @@ C = '473463379097395072539382495898454906162085639659681879026616405399' + \
 #print bin(int(C, 10))
 #print len(N)
 
+
 def make_candidate(lst, radix):
     n = 0
-    for idx in xrange(len(lst)):
+    for idx in range(len(lst)):
         n += lst[-(idx+1)] * (radix**idx)
     return n
+
 
 def find_word(word_list):
     large_n = int(N)
     large_c = int(C)
     while len(word_list) < 10:
         word_list[-1] += 1
-        for idx in xrange(len(word_list)-1, -1, -1):
+        for idx in range(len(word_list) - 1, -1, -1):
             if word_list[idx] == 36:
                 word_list[idx] = 0
                 if idx == 0:
                     word_list = [1] + word_list
-                    print word_list
+                    print(word_list)
                 else:
                     word_list[idx-1] += 1
         cand = make_candidate(word_list, 36)
         if encrypt(cand, e, large_n) == large_c:
             return True, word_list
-    print 'NO'
+    print('NO')
     return False, word_list
+
 
 def find_p(start, end):
     P = start
@@ -63,25 +71,41 @@ def find_p(start, end):
         if encrypt(P, e, large_n) == large_c:
             return True, P
         if P%100 == 0:
-            print P
+            print(P)
         P += 1
     return False, P
 
+
 def encrypt(value, e, n):
     val = 1
-    for i in xrange(e):
+    for i in range(e):
         val *= value
         val %= n
     return val % n
 
-#print find_word([1]) #[22, 10, 7, 17]
-#print find_p(1, int(N))
+
+# print find_word([1]) #[22, 10, 7, 17]
+# print find_p(1, int(N))
+
 p = 3
 large_n = int(N)
-while large_n%p > 0:
+while large_n % p > 0:
     p += 2
-print p
-print large_n/float(p)
+print(p)
+print(large_n / float(p))
+
+
+def is_prime(n):
+    if (n < 2) or (n % 2 == 0):
+        return False
+
+    sqn = int(n ** 0.5)
+    flag = False
+    for i in range(3, sqn + 1, 2):
+        flag |= (n % i == 0)
+
+    return not flag
+
 
 def factoring(n):
     p = 2
@@ -89,7 +113,7 @@ def factoring(n):
     while n > 1:
         if is_prime(p):
             count = 0
-            while n%p == 0 and n > 1:
+            while n % p == 0 and n > 1:
                 count += 1
                 n /= p
             lst.append((p, count))
